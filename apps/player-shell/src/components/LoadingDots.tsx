@@ -1,4 +1,4 @@
-export default function BillingLoading() {
+export function LoadingDots() {
   return (
     <div className="flex items-center justify-center min-h-[400px] gap-1 text-gray-400">
       <span>Loading</span>
