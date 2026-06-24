@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js build output
+apps/player-shell/.next/
+apps/player-shell/out/
+
+# env
+.env
+.env.local
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode/
+.idea/
+
+# pnpm
+pnpm-debug.log
+
+# spec and internal docs (not for reviewers)
+spec/
+docs/
+
+# vercel
+.vercel

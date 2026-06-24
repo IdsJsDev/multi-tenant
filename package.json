@@ -1,0 +1,10 @@
+{
+  "name": "tenant-shell-mono",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": ["apps/*", "themes/*"],
+  "scripts": {
+    "dev": "pnpm --filter player-shell dev",
+    "build": "pnpm --filter player-shell build"
+  }
+}
