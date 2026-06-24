@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import type { Tenant, BrandId } from '@/api/tenant/types'
 import { fetchTenant } from '@/api/tenant/mock'
 
@@ -14,6 +14,7 @@ type TenantContextValue = {
   setTenant: (tenant: Tenant) => void
   setError: (error: string) => void
   refetch: () => void
+  reset: () => void
 }
 
 const TenantContext = createContext<TenantContextValue | null>(null)
@@ -42,7 +43,6 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       })
   }
 
-  useEffect(() => { refetch() }, [])
 
   const setTenant = (t: Tenant) => {
     setTenantState(t)
@@ -54,8 +54,14 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false)
   }
 
+  const reset = () => {
+    setTenantState({ brandId: 'default', name: '', locale: 'en-US', currency: 'USD' })
+    setErrorState(null)
+    setIsLoading(true)
+  }
+
   return (
-    <TenantContext.Provider value={{ ...tenant, isLoading, error, setTenant, setError, refetch }}>
+    <TenantContext.Provider value={{ ...tenant, isLoading, error, setTenant, setError, refetch, reset }}>
       {children}
     </TenantContext.Provider>
   )
