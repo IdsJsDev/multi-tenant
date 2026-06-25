@@ -6,6 +6,7 @@ import { LoadingDots } from "@/components/LoadingDots";
 import { EmptyState } from "@/components/EmptyState";
 import { BrandButton, BrandCard } from "theme-tenant-alpha";
 import { useTranslation } from "@/i18n/useTranslation";
+import { useBillingApi } from "@/api/billing/useBillingApi";
 import type { BillingItem } from "@/interfaces/billing.interface";
 
 interface BillingCardProps {
@@ -14,6 +15,7 @@ interface BillingCardProps {
 
 export function BillingCard({ initialBilling }: BillingCardProps) {
   const { name, brandId, locale, currency, refetch: refetchTenant, isLoading: isTenantLoading } = useTenant();
+  const { getBilling } = useBillingApi();
   const t = useTranslation();
 
   const [billing, setBilling] = useState<BillingItem | null>(initialBilling);
@@ -22,10 +24,9 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
   const fetchBilling = useCallback(() => {
     const controller = new AbortController();
     setIsLoading(true);
-    fetch("/api/billing", { signal: controller.signal })
-      .then((res) => res.json())
+    getBilling(controller.signal)
       .then((data) => {
-        setBilling(data.billing);
+        setBilling(data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -34,7 +35,7 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
         }
       });
     return () => controller.abort();
-  }, []);
+  }, [getBilling]);
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-10">

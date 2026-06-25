@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useIdentityApi } from "@/api/identity/useIdentityApi";
 
 type AuthContextValue = {
   isLoggedIn: boolean;
@@ -20,6 +21,7 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const { login: identityLogin } = useIdentityApi();
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [isReady, setIsReady] = useState(false);
 
@@ -32,15 +34,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    setTenant(data.tenant);
-    localStorage.setItem("tenant", JSON.stringify(data.tenant));
-  }, []);
+    const { tenant } = await identityLogin(email, password);
+    setTenant(tenant);
+    localStorage.setItem("tenant", JSON.stringify(tenant));
+  }, [identityLogin]);
 
   const logout = useCallback(() => {
     setTenant(null);
