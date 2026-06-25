@@ -1,5 +1,7 @@
-import { NextResponse } from 'next/server'
+import { getBilling } from "@/utils/billing";
+import { NextResponse } from "next/server";
 
 export async function GET() {
-  return NextResponse.json({ message: 'TODO: billing data' })
+  const billing = await getBilling();
+  return NextResponse.json({ billing });
 }

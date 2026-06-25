@@ -1,8 +1,9 @@
-import { tenantsList } from "@/mock/tenant.mock";
+import { getRandomTenant } from "@/utils/tenant";
 import { NextResponse } from "next/server";
 
 export async function POST() {
+  const tenant = await getRandomTenant();
   await new Promise((resolve) => setTimeout(resolve, 300));
-  const tenant = tenantsList[Math.floor(Math.random() * tenantsList.length)];
+
   return NextResponse.json({ tenant });
 }

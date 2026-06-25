@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
 interface BrandCardProps {
-  title?: string
-  children: React.ReactNode
-  className?: string
+  title?: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function BrandCard({ title, children, className = '' }: BrandCardProps) {
+export function BrandCard({ title, children, className = "" }: BrandCardProps) {
   return (
     <div className={`bg-surface rounded-lg shadow-card p-6 ${className}`}>
       {title && (
@@ -14,5 +14,5 @@ export function BrandCard({ title, children, className = '' }: BrandCardProps) {
       )}
       {children}
     </div>
-  )
+  );
 }

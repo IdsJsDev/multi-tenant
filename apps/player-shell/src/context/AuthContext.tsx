@@ -1,49 +1,63 @@
-'use client'
+"use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import type { Tenant } from '@/interfaces/tenant.interface'
+import { Tenant } from "@/interfaces/tenant.interface";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type AuthContextValue = {
-  isLoggedIn: boolean
-  isReady: boolean
-  tenant: Tenant | null
-  login: (email: string, password: string) => Promise<void>
-  logout: () => void
-}
+  isLoggedIn: boolean;
+  isReady: boolean;
+  tenant: Tenant | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+};
 
-const AuthContext = createContext<AuthContextValue | null>(null)
+const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [tenant, setTenant] = useState<Tenant | null>(null)
-  const [isReady, setIsReady] = useState(false)
+  const [tenant, setTenant] = useState<Tenant | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setIsReady(true)
-  }, [])
+    const saved = localStorage.getItem("tenant");
+    if (saved) {
+      setTenant(JSON.parse(saved));
+    }
+    setIsReady(true);
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
-    })
-    const data = await res.json()
-    setTenant(data.tenant)
-  }, [])
+    });
+    const data = await res.json();
+    setTenant(data.tenant);
+    localStorage.setItem("tenant", JSON.stringify(data.tenant));
+  }, []);
 
   const logout = useCallback(() => {
-    setTenant(null)
-  }, [])
+    setTenant(null);
+    localStorage.removeItem("tenant");
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: tenant !== null, isReady, tenant, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: tenant !== null, isReady, tenant, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 export function useAuth(): AuthContextValue {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
-  return ctx
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
 }
