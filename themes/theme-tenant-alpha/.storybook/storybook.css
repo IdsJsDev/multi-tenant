@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  padding: 1rem;
+}

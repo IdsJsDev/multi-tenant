@@ -28,3 +28,6 @@ docs/
 
 # vercel
 .vercel
+
+# storybook build output
+storybook-static/

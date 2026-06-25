@@ -5,6 +5,8 @@
   "workspaces": ["apps/*", "themes/*"],
   "scripts": {
     "dev": "pnpm --filter player-shell dev",
-    "build": "pnpm --filter player-shell build"
+    "build": "pnpm --filter player-shell build",
+    "storybook": "pnpm --filter theme-tenant-alpha storybook",
+    "build-storybook": "pnpm --filter theme-tenant-alpha build-storybook"
   }
 }
