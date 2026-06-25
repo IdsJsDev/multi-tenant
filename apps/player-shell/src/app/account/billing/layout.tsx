@@ -1,28 +1,29 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { useTenant } from '@/context/TenantContext'
 
 export default function BillingLayout({ children }: { children: React.ReactNode }) {
-  const { logout, tenant } = useAuth()
-  const { isReady, isLoggedIn } = useRequireAuth()
-  const { setTenant, reset, brandId } = useTenant()
+  const { logout } = useAuth()
+  const isLoggedIn = useRequireAuth()
+  const { brandId } = useTenant()
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (tenant) setTenant(tenant)
-  }, [tenant, setTenant])
+    setMounted(true)
+  }, [])
 
   const handleLogout = () => {
     logout()
-    reset()
     router.push('/')
   }
 
-  if (!isReady || !isLoggedIn) return null
+  if (!mounted) return null
+  if (!isLoggedIn) return null
 
   return (
     <div className={`theme-${brandId} bg-background min-h-screen`}>

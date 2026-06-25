@@ -1,6 +1,6 @@
-import { useApi } from "../ApiProvider";
-import type { BillingApi } from "./types";
+import { useApi } from '../ApiProvider'
+import type { BillingApi } from './types'
 
 export function useBillingApi(): BillingApi {
-  return useApi().billingApi;
+  return useApi().billingApi
 }

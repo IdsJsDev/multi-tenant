@@ -1,50 +1,61 @@
-"use client";
+'use client'
 
-import { useCallback, useState } from "react";
-import { useTenant } from "@/context/TenantContext";
-import { LoadingDots } from "@/components/LoadingDots";
-import { EmptyState } from "@/components/EmptyState";
-import { BrandButton, BrandCard } from "theme-tenant-alpha";
-import { useTranslation } from "@/i18n/useTranslation";
-import { useBillingApi } from "@/api/billing/useBillingApi";
-import type { BillingItem } from "@/interfaces/billing.interface";
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTenant } from '@/context/TenantContext'
+import { LoadingDots } from '@/components/LoadingDots'
+import { EmptyState } from '@/components/EmptyState'
+import { BrandButton, BrandCard } from 'theme-tenant-alpha'
+import { useTranslation } from '@/i18n/useTranslation'
+import { useBillingApi } from '@/api/billing/useBillingApi'
+import type { BillingItem } from '@/interfaces/billing.interface'
 
 interface BillingCardProps {
-  initialBilling: BillingItem | null;
+  initialBilling: BillingItem | null
 }
 
 export function BillingCard({ initialBilling }: BillingCardProps) {
-  const { name, brandId, locale, currency, refetch: refetchTenant, isLoading: isTenantLoading } = useTenant();
-  const { getBilling } = useBillingApi();
-  const t = useTranslation();
+  const {
+    name,
+    brandId,
+    locale,
+    currency,
+    refetch: refetchTenant,
+    isLoading: isTenantLoading,
+  } = useTenant()
+  const { getBilling } = useBillingApi()
+  const t = useTranslation()
 
-  const [billing, setBilling] = useState<BillingItem | null>(initialBilling);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null)
+  const [billing, setBilling] = useState<BillingItem | null>(initialBilling)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    return () => abortRef.current?.abort()
+  }, [])
 
   const fetchBilling = useCallback(() => {
-    const controller = new AbortController();
-    setIsLoading(true);
-    setError(null);
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
+    setIsLoading(true)
+    setError(null)
     getBilling(controller.signal)
       .then((data) => {
-        setBilling(data);
-        setIsLoading(false);
+        setBilling(data)
+        setIsLoading(false)
       })
       .catch((err) => {
-        if (err.name !== "AbortError") {
-          setIsLoading(false);
-          setError(err instanceof Error ? err.message : "Failed to load billing data");
+        if (err.name !== 'AbortError') {
+          setIsLoading(false)
+          setError(err instanceof Error ? err.message : 'Failed to load billing data')
         }
-      });
-    return () => controller.abort();
-  }, [getBilling]);
+      })
+  }, [getBilling])
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-semibold text-text-base mb-6">
-        {t.billing.title}
-      </h1>
+      <h1 className="text-2xl font-semibold text-text-base mb-6">{t.billing.title}</h1>
 
       <div className="grid grid-cols-2 gap-6 items-stretch">
         <div className="flex flex-col gap-4">
@@ -80,7 +91,9 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
 
             {!isLoading && error && (
               <div className="flex flex-col items-center gap-3 py-8">
-                <p className="text-sm text-error" role="alert">{error}</p>
+                <p className="text-sm text-error" role="alert">
+                  {error}
+                </p>
                 <BrandButton onClick={fetchBilling} variant="outline" size="sm">
                   {t.billing.tryAgain}
                 </BrandButton>
@@ -119,5 +132,5 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
         </div>
       </div>
     </main>
-  );
+  )
 }

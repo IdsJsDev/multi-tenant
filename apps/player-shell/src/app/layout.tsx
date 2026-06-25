@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ApiProvider } from '@/api/ApiProvider'
 import { AuthProvider } from '@/context/AuthContext'
 import { TenantProvider } from '@/context/TenantContext'
+import { Toast } from '@/components/Toast'
 import 'theme-tenant-alpha'
 import './globals.css'
 
@@ -18,9 +19,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <ApiProvider>
-          <AuthProvider>
-            <TenantProvider>{children}</TenantProvider>
-          </AuthProvider>
+          <TenantProvider>
+            <AuthProvider>
+              {children}
+              <Toast />
+            </AuthProvider>
+          </TenantProvider>
         </ApiProvider>
       </body>
     </html>

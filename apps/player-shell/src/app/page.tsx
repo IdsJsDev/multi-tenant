@@ -13,12 +13,14 @@ export default function HomePage() {
         </Link>
       </header>
 
-      <main className="flex flex-col items-center justify-center gap-6 px-4" style={{ minHeight: 'calc(100vh - 57px)' }}>
+      <main
+        className="flex flex-col items-center justify-center gap-6 px-4"
+        style={{ minHeight: 'calc(100vh - 57px)' }}
+      >
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Player Shell</h1>
           <p className="text-gray-500">Multi-tenant frontend demo</p>
         </div>
-
       </main>
     </>
   )

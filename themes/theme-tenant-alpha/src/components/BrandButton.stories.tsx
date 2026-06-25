@@ -46,8 +46,12 @@ export const Loading: Story = {
 export const AllVariants: Story = {
   render: (args) => (
     <div className="flex gap-4 items-center">
-      <BrandButton {...args} variant="primary">Primary</BrandButton>
-      <BrandButton {...args} variant="outline">Outline</BrandButton>
+      <BrandButton {...args} variant="primary">
+        Primary
+      </BrandButton>
+      <BrandButton {...args} variant="outline">
+        Outline
+      </BrandButton>
     </div>
   ),
 }
@@ -55,9 +59,15 @@ export const AllVariants: Story = {
 export const AllSizes: Story = {
   render: (args) => (
     <div className="flex gap-4 items-center">
-      <BrandButton {...args} size="sm">Small</BrandButton>
-      <BrandButton {...args} size="md">Medium</BrandButton>
-      <BrandButton {...args} size="lg">Large</BrandButton>
+      <BrandButton {...args} size="sm">
+        Small
+      </BrandButton>
+      <BrandButton {...args} size="md">
+        Medium
+      </BrandButton>
+      <BrandButton {...args} size="lg">
+        Large
+      </BrandButton>
     </div>
   ),
 }

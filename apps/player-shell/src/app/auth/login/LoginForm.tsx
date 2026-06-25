@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '@/context/AuthContext'
@@ -13,6 +13,7 @@ type FormValues = {
 export function LoginForm() {
   const router = useRouter()
   const { login } = useAuth()
+  const [redirecting, setRedirecting] = useState(false)
 
   const {
     register,
@@ -21,8 +22,13 @@ export function LoginForm() {
   } = useForm<FormValues>()
 
   const onSubmit = async (data: FormValues) => {
-    await login(data.email, data.password)
-    router.push('/account/billing')
+    try {
+      await login(data.email, data.password)
+      setRedirecting(true)
+      router.push('/account/billing')
+    } catch {
+      // Toast already shown by ApiProvider
+    }
   }
 
   return (
@@ -49,7 +55,9 @@ export function LoginForm() {
               })}
             />
             {errors.email && (
-              <span role="alert" className="text-xs text-red-500">{errors.email.message}</span>
+              <span role="alert" className="text-xs text-red-500">
+                {errors.email.message}
+              </span>
             )}
           </div>
 
@@ -71,16 +79,18 @@ export function LoginForm() {
               })}
             />
             {errors.password && (
-              <span role="alert" className="text-xs text-red-500">{errors.password.message}</span>
+              <span role="alert" className="text-xs text-red-500">
+                {errors.password.message}
+              </span>
             )}
           </div>
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || redirecting}
             className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
+            {isSubmitting || redirecting ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
       </div>

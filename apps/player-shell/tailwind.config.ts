@@ -1,10 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: [
-    './src/**/*.{ts,tsx}',
-    '../../themes/theme-tenant-alpha/src/**/*.{ts,tsx}',
-  ],
+  content: ['./src/**/*.{ts,tsx}', '../../themes/theme-tenant-alpha/src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {

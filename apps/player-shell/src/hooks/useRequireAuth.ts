@@ -1,16 +1,14 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
+import { useTenant } from '@/context/TenantContext'
 
-// Redirects to home if the user is not authenticated.
-// In production this would be handled by Next.js middleware with cookies.
 export function useRequireAuth() {
-  const { isLoggedIn, isReady } = useAuth()
+  const { isLoggedIn } = useTenant()
   const router = useRouter()
 
   useEffect(() => {
-    if (isReady && !isLoggedIn) router.replace('/')
-  }, [isReady, isLoggedIn, router])
+    if (!isLoggedIn) router.replace('/')
+  }, [isLoggedIn, router])
 
-  return { isReady, isLoggedIn }
+  return isLoggedIn
 }

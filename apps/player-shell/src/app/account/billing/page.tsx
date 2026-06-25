@@ -1,8 +1,8 @@
-import { getBilling } from "@/utils/billing";
-import { BillingCard } from "./BillingCard";
+import { getBilling } from '@/utils/billing'
+import { BillingCard } from './BillingCard'
 
 export default async function BillingPage() {
-  const billing = await getBilling();
+  const billing = await getBilling()
 
-  return <BillingCard initialBilling={billing} />;
+  return <BillingCard initialBilling={billing} />
 }

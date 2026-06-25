@@ -4,8 +4,6 @@ interface EmptyStateProps {
 
 export function EmptyState({ children = 'No data' }: EmptyStateProps) {
   return (
-    <div className="flex items-center justify-center py-8 text-text-muted text-sm">
-      {children}
-    </div>
+    <div className="flex items-center justify-center py-8 text-text-muted text-sm">{children}</div>
   )
 }

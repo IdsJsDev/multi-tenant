@@ -1,5 +1,5 @@
-import type { BillingItem } from "@/interfaces/billing.interface";
+import type { BillingItem } from '@/interfaces/billing.interface'
 
 export interface BillingApi {
-  getBilling(signal?: AbortSignal): Promise<BillingItem | null>;
+  getBilling(signal?: AbortSignal): Promise<BillingItem | null>
 }

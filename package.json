@@ -2,12 +2,22 @@
   "name": "tenant-shell-mono",
   "private": true,
   "packageManager": "pnpm@9.0.0",
-  "workspaces": ["apps/*", "themes/*"],
+  "workspaces": [
+    "apps/*",
+    "themes/*"
+  ],
   "scripts": {
     "dev": "pnpm --filter player-shell dev",
     "build": "pnpm --filter player-shell build",
     "test": "pnpm --filter player-shell test",
+    "lint": "pnpm --filter player-shell lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "storybook": "pnpm --filter theme-tenant-alpha storybook",
     "build-storybook": "pnpm --filter theme-tenant-alpha build-storybook"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.8.4"
   }
 }

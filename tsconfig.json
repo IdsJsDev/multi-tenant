@@ -1,7 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "./apps/player-shell" },
-    { "path": "./themes/theme-tenant-alpha" }
-  ]
+  "references": [{ "path": "./apps/player-shell" }, { "path": "./themes/theme-tenant-alpha" }]
 }
