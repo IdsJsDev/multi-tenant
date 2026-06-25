@@ -31,3 +31,6 @@ docs/
 
 # storybook build output
 storybook-static/
+
+# typescript incremental build info
+*.tsbuildinfo

@@ -6,7 +6,6 @@ import { useAuth } from '@/context/AuthContext'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { useTenant } from '@/context/TenantContext'
 
-
 export default function BillingLayout({ children }: { children: React.ReactNode }) {
   const { logout, tenant } = useAuth()
   const { isReady, isLoggedIn } = useRequireAuth()

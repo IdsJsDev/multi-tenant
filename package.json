@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "pnpm --filter player-shell dev",
     "build": "pnpm --filter player-shell build",
+    "test": "pnpm --filter player-shell test",
     "storybook": "pnpm --filter theme-tenant-alpha storybook",
     "build-storybook": "pnpm --filter theme-tenant-alpha build-storybook"
   }

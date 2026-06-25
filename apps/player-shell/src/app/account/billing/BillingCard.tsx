@@ -20,10 +20,12 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
 
   const [billing, setBilling] = useState<BillingItem | null>(initialBilling);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchBilling = useCallback(() => {
     const controller = new AbortController();
     setIsLoading(true);
+    setError(null);
     getBilling(controller.signal)
       .then((data) => {
         setBilling(data);
@@ -32,6 +34,7 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
       .catch((err) => {
         if (err.name !== "AbortError") {
           setIsLoading(false);
+          setError(err instanceof Error ? err.message : "Failed to load billing data");
         }
       });
     return () => controller.abort();
@@ -75,9 +78,18 @@ export function BillingCard({ initialBilling }: BillingCardProps) {
           <BrandCard title={t.billing.billingInfo} className="flex-1">
             {isLoading && <LoadingDots />}
 
-            {!isLoading && !billing && <EmptyState>{t.billing.empty}</EmptyState>}
+            {!isLoading && error && (
+              <div className="flex flex-col items-center gap-3 py-8">
+                <p className="text-sm text-error" role="alert">{error}</p>
+                <BrandButton onClick={fetchBilling} variant="outline" size="sm">
+                  {t.billing.tryAgain}
+                </BrandButton>
+              </div>
+            )}
 
-            {!isLoading && billing && (
+            {!isLoading && !error && !billing && <EmptyState>{t.billing.empty}</EmptyState>}
+
+            {!isLoading && !error && billing && (
               <dl className="flex flex-col gap-3 text-sm">
                 <div className="flex justify-between">
                   <dt className="text-text-muted">{t.billing.description}</dt>

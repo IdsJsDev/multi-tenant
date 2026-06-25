@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { ApiProvider } from '@/api/ApiProvider'
 import { AuthProvider } from '@/context/AuthContext'
 import { TenantProvider } from '@/context/TenantContext'
-import 'theme-tenant-alpha/src/tokens.css'
+import 'theme-tenant-alpha'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })

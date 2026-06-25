@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '@/context/AuthContext'
@@ -48,7 +49,7 @@ export function LoginForm() {
               })}
             />
             {errors.email && (
-              <span className="text-xs text-red-500">{errors.email.message}</span>
+              <span role="alert" className="text-xs text-red-500">{errors.email.message}</span>
             )}
           </div>
 
@@ -70,7 +71,7 @@ export function LoginForm() {
               })}
             />
             {errors.password && (
-              <span className="text-xs text-red-500">{errors.password.message}</span>
+              <span role="alert" className="text-xs text-red-500">{errors.password.message}</span>
             )}
           </div>
 
