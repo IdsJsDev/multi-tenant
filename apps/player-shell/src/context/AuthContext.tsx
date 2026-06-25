@@ -1,37 +1,42 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import type { Tenant } from '@/interfaces/tenant.interface'
 
 type AuthContextValue = {
   isLoggedIn: boolean
   isReady: boolean
-  login: () => void
+  tenant: Tenant | null
+  login: (email: string, password: string) => Promise<void>
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [tenant, setTenant] = useState<Tenant | null>(null)
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true')
     setIsReady(true)
   }, [])
 
-  const login = () => {
-    localStorage.setItem('isLoggedIn', 'true')
-    setIsLoggedIn(true)
-  }
+  const login = useCallback(async (email: string, password: string) => {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
+    const data = await res.json()
+    setTenant(data.tenant)
+  }, [])
 
-  const logout = () => {
-    localStorage.removeItem('isLoggedIn')
-    setIsLoggedIn(false)
-  }
+  const logout = useCallback(() => {
+    setTenant(null)
+  }, [])
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isReady, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn: tenant !== null, isReady, tenant, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

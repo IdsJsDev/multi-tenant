@@ -8,14 +8,14 @@ import { useTenant } from '@/context/TenantContext'
 
 
 export default function BillingLayout({ children }: { children: React.ReactNode }) {
-  const { logout } = useAuth()
+  const { logout, tenant } = useAuth()
   const { isReady, isLoggedIn } = useRequireAuth()
-  const { reset, refetch, brandId } = useTenant()
+  const { setTenant, reset, brandId } = useTenant()
   const router = useRouter()
 
   useEffect(() => {
-    refetch()
-  }, [])
+    if (tenant) setTenant(tenant)
+  }, [tenant, setTenant])
 
   const handleLogout = () => {
     logout()

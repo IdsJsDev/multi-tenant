@@ -20,9 +20,7 @@ export function LoginForm() {
   } = useForm<FormValues>()
 
   const onSubmit = async (data: FormValues) => {
-    // TODO: call auth API
-    console.log(data)
-    login()
+    await login(data.email, data.password)
     router.push('/account/billing')
   }
 
