@@ -3,5 +3,9 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   const billing = await getBilling()
-  return NextResponse.json({ billing })
+  return NextResponse.json({ billing }, {
+    headers: {
+      'Cache-Control': 'no-store',
+    },
+  })
 }
